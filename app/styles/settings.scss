@@ -1,0 +1,136 @@
+.settings-button {
+	position: absolute;
+	right: 0;
+	bottom: 10vh;
+	margin-right: 1vw;
+	z-index: 2;
+	background-color: #F17D30;
+	box-shadow: #D56D28 3px 3px;
+	font-size: 20px;
+}
+.settings-button:active {
+	box-shadow: #D26A25 3px 3px inset;
+	color: #FFF;
+}
+.settings-button:focus, .settings-button:active:focus {
+	outline: none;
+}
+.chat-button {
+	position: absolute;
+	right: 5vw;
+	bottom: 10vh;
+	margin-right: 1vw;
+	z-index: 2;
+	background-color: #16a085;
+	box-shadow: #3dbd96 3px 3px;
+	font-size: 20px;
+}
+.chat-button:active {
+	box-shadow: #3dbd96 3px 3px inset;
+	color: #FFF;
+}
+.chat-button:focus, .chat-button:active:focus {
+	outline: none;
+}
+.whiteboard-button {
+	position: absolute;
+	right: 10vw;
+	bottom: 10vh;
+	margin-right: 1vw;
+	z-index: 2;  
+	background-color: #e74c3c;
+	box-shadow: #c0392b 3px 3px;
+	font-size: 20px;
+}
+.whiteboard-button:active {
+	box-shadow: #c0392b 3px 3px inset;
+	color: #FFF;
+}
+.whiteboard-button:focus, .whiteboard-button:active:focus {
+	outline: none;
+}
+.settings-panel {
+	width: 15vw;
+	position: absolute;
+	right: 1vw;
+	top: 10vh;
+	// background-color: #e5e5e5;
+	height: 30vw;
+	// border-radius: 10px;
+	border: 1px solid #c4c4c4;
+	padding: 0;
+	z-index: 2;
+}
+.settings-panel .panel-heading {
+	height: 10%;
+	background-color: #F17D30;
+}
+.settings-panel .panel-body {
+	height: 78%;
+	padding: 5px 10px;
+}
+.chat-panel {
+	width: 20vw;
+	position: absolute;
+	right: 1vw;
+	top: 10vh;
+	// background-color: #e5e5e5;
+	height: 30vw;
+	border: none;
+	padding: 0;
+	z-index: 2;
+}
+.chat-panel .panel-heading {
+	height: 10%;
+	background-color: #16a085;
+}
+.chat-panel .panel-body {
+	height: 78%;
+	padding: 5px 10px;
+}
+.chat-panel .panel-footer {
+	height: 12%;
+	padding: 2% 3%;
+	background-color: #16a085;
+}
+.chat-panel.two-panels {
+	margin-right: 16vw;
+}
+.chat-panel .users-panel {
+	width: 12vw;
+	height: 30vw;
+	position: absolute;
+	left: 0;
+	border-right: none;
+}
+.chat-panel .users-panel .panel-heading {
+	border-top-right-radius: 0;
+}
+.chat-panel .users-panel .panel-footer {
+	border-bottom-right-radius: 0;
+}
+.chat-panel .users-panel .user-color {
+	width: 15px;
+	height: 15px;
+	margin-top: 3px;
+	position: absolute;
+}
+.chat-panel .users-panel .user-name {
+	margin-left: 30px;
+}
+.chat-panel .message-panel {
+	width: 18vw;
+	height: 30vw;
+	position: absolute;
+	right: 0;
+}
+.chat-panel .message-panel .panel-heading {
+	border-top-left-radius: 0;
+}
+.chat-panel .message-panel .panel-footer {
+	border-bottom-left-radius: 0;
+}
+.chat-panel .message-panel .chat, .chat-panel .message-panel .userlist {
+	height: 100%;
+	overflow: scroll;
+}

@@ -1,0 +1,47 @@
+<canvas id="whiteboard-canvas" width="1330" height="680" ng-mouseup="mouseup($event)" ng-mousedown="mousedown($event)" ng-mousemove="mousemove($event)"></canvas>
+
+<div id="tools">
+	<span><input type="radio" name="tool" value="pencil" checked data-ng-model="tool"> Pencil</span>
+	<span><input type="radio" name="tool" value="line" data-ng-model="tool"> Line</span>
+	<span><input type="radio" name="tool" value="rectangle" data-ng-model="tool"> Rectangle</span>
+	<span><input type="radio" name="tool" value="circle" data-ng-model="tool"> Circle</span>
+	<span><input type="radio" name="tool" value="image" data-ng-model="tool"> Image</span>
+	<div><button data-ng-click="undo()">Undo</button></div>
+</div>
+
+<div id="drawOptions">
+	<div id="colors" data-ng-hide="isToolNameSelected('image')">         
+		<img src="images/colors/black.png" data-ng-click="selectColor('1')">
+		<img src="images/colors/white.png" data-ng-click="selectColor('2')">
+		<img src="images/colors/blue.png" data-ng-click="selectColor('3')">
+		<img src="images/colors/skyblue.png" data-ng-click="selectColor('4')">
+		<img src="images/colors/red.png" data-ng-click="selectColor('5')">
+		<img src="images/colors/green.png" data-ng-click="selectColor('6')">
+		<img src="images/colors/yellow.png" data-ng-click="selectColor('7')">
+		<img src="images/colors/pink.png" data-ng-click="selectColor('8')">
+		<img src="images/colors/gray.png" data-ng-click="selectColor('9')">  
+	</div>
+
+	<div id="colorTarget" data-ng-hide="isToolNameSelected('image')">
+		<div title="Line color" data-ng-class="lineColorCss" data-ng-click="changeColorTarget('line')"></div>
+		<div title="Fill color" data-ng-class="fillColorCss" data-ng-click="changeColorTarget('fill')"></div>
+		<br>
+		<span>Line <span>Fill<span></span>
+	</div>
+
+	<div id="lineWidth" data-ng-hide="isToolNameSelected('image')">
+		<input type="radio" name="lineWidth" value="small" title="small" data-ng-model="lineText" data-ng-click="changeLineWidth('3')">
+		<input type="radio" name="lineWidth" value="medium" checked title="medium" data-ng-model="lineText" data-ng-click="changeLineWidth('5')">
+		<input type="radio" name="lineWidth" value="large" title="large" data-ng-model="lineText" data-ng-click="changeLineWidth('10')">
+		{{lineText}}
+	</div>
+
+	<div id="fillOptions" data-ng-show="isToolNameSelected('rectangle', 'circle')">
+	Fill shape?
+		<input type="checkbox" data-ng-model="fillShape">
+	</div>
+
+	<div id="imageOptions" data-ng-show="isToolNameSelected('image')">
+		<input id="inpImage" type="file">
+	</div>
+</div>

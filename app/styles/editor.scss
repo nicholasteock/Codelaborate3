@@ -1,0 +1,13 @@
+.ace_editor {
+	height: 75vh;
+	border: 2px solid #c4c4c4;
+}
+.powered-by-firepad {
+	display: none;
+}
+.output-editor {
+	border: none !important;
+}
+.output-editor .ace_cursor {
+	border-left: 7px solid;
+}

@@ -1,0 +1,50 @@
+<div ng-class="{'chat-panel': true,'text-center':true,'two-panels': settingsShown}" style="width: 30vw;">
+
+<div class="panel panel-default users-panel" ng-show="showUsers">
+	<div class="panel-heading">
+		<h3 class="panel-title">Online ({{fireroom.users.length}})</h3>
+	</div>
+	<div class="panel-body">
+		<ul class="util-list-clear text-left userlist">
+			<li ng-repeat="user in fireroom.users">
+				<span class="user-color" style="background-color:{{user.color}};"></span>
+				<span class="user-name">{{user.$id}}</span>
+			</li>
+		</ul>
+	</div>
+	<div class="panel-footer">
+		<!-- <div class="input-group">
+			<input type="text" class="form-control" ng-model="newUserId" placeholder="Username">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" tooltip="Save" ng-click="updateUserId()"><span class="glyphicon glyphicon-pencil"></span></button>
+			</span>
+		</div> -->
+	</div>
+</div>
+
+<div class="panel panel-default message-panel text-center">
+	<div class="panel-heading">
+		<span class="pull-left glyphicon glyphicon-user" title="Show/Hide online users" ng-click="showUsers=!showUsers"></span>
+    	<h3 class="panel-title">Chat Box</h3>
+	</div>
+	<div class="panel-body">
+		<div class="chat">
+			<ul class="util-list-clear text-left">
+				<li ng-repeat="message in fireroom.chat">
+					<span class="bold chat-username">{{message.from}}: </span>
+					<span class="chat-message">{{message.content}}</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="panel-footer">
+		<div class="input-group">
+			<input ng-keypress="chatKeyPressed($event)" type="text" class="form-control" ng-model="inputMessage" placeholder="Message">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" tooltip="Send (ENTER)" ng-click="sendMessage()"><span class="glyphicon glyphicon-send"></span></button>
+			</span>
+		</div>
+	</div>
+</div>
+
+</div>

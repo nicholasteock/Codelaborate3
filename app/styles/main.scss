@@ -1,0 +1,149 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+
+@import 'variables';
+@import 'mixins';
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+/* Space out content a bit */
+body {
+  padding-top: 70px;
+  padding-bottom: 20px;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+  background-color: $navy;
+
+  /* Make the masthead heading the same height as the navigation */
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+  }
+
+  .navbar-brand {
+    width: 150px;
+    padding: 5px;
+  }
+  .navbar-top {
+    padding-top: 5px;
+  }
+  .navbar-top .navbar-item a {
+    cursor: pointer;
+    color: #FFF;
+  }
+  .navbar-top .navbar-item a:hover {
+    background-color: transparent;
+    opacity: 0.8;
+    box-shadow: #1e043c 2px 2px inset;
+  }
+  .navbar-top .navbar-item.active a {
+    background-color: #1e043c;
+  
+    :hover {
+      background-color: #1e043c;
+    }
+  }
+}
+
+/* Custom page footer */
+.footer {
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+  background-color: $navy;
+}
+.footer .collaboration-link {
+  width: 20vw;
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+
+  /* Remove the padding we set earlier */
+  .header,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.loading-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.6);
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+}
+.loader {
+  margin: 6em auto;
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 1.6em solid rgba(255, 255, 255, 0.2);
+  border-right: 1.6em solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1.6em solid rgba(255, 255, 255, 0.2);
+  border-left: 1.6em solid #ffffff;
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+}
+.loader,
+.loader:after {
+  border-radius: 50%;
+  width: 14em;
+  height: 14em;
+}
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+
+@import 'helpers';
+@import 'editor';
+@import 'settings';
+@import 'modals';
+@import 'whiteboard';

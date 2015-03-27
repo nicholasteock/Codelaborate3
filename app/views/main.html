@@ -1,0 +1,65 @@
+<nav class="navbar navbar-default navbar-fixed-top header">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#/">
+				<img class="img-responsive" alt="Logo" src="images/logo.png">
+			</a>
+		</div>
+
+		<ul class="nav nav-pills navbar-top">
+			<li class="navbar-item"><a ng-click="runCode()"><span class="glyphicon glyphicon-play-circle"></span> Run</a></li>
+			<li class="navbar-item"><a ng-click="saveCode()"><span class="glyphicon glyphicon-cloud-upload"></span> Upload For Sharing</a></li>
+			<li class="navbar-item"><a ng-click="downloadCode()"><span class="glyphicon glyphicon-save"></span> Download</a></li>
+		</ul>
+	</div>
+</nav>
+
+<!-- Loading spinner/status overlay -->
+<div class="loading-backdrop" ng-show="loading">
+	<div class="loader"></div>
+	<div class="center-block text-center util-font-white">
+		<h3>{{loadingStatus}}</h3>
+	</div>
+</div>
+
+<div class="container-fluid">
+
+	<div class="col-md-6 col-lg-6">
+
+		<!-- Editor -->
+		<div ui-ace="{
+		  useWrapMode : true,
+		  theme:'twilight',
+		  onLoad: aceLoaded,
+		  onChange: aceChanged
+		}"></div>
+
+	</div>
+	<div class="col-md-6 col-lg-6" style="height:75vh;">
+
+		<!-- Output panel -->
+		<div class="output-editor" ui-ace="{
+		  useWrapMode : true,
+		  showGutter: false,
+		  theme:'chrome',
+		  onLoad: outputAceLoaded,
+		  onChange: outputAceChanged
+		}"></div>
+	</div>
+
+	<!-- Button toggles -->
+	<button type="button" class="btn btn-lg settings-button" title="Settings" ng-click="settingsShown=!settingsShown" tooltip="Settings"><span class="glyphicon glyphicon-cog"></span></button>
+	<button type="button" class="btn btn-lg chat-button" tooltip="Chat Box" ng-click="showSavePrompt()" tooltip="Chat box unavailable"><span class="glyphicon glyphicon-comment"></span></button>
+	<button type="button" class="btn btn-lg whiteboard-button" title="Whiteboard" ng-click="showSavePrompt()" tooltip="White board unavailable"><span class="glyphicon glyphicon-blackboard"></span></button>
+
+	<!-- Panels -->
+	<settings-panel ng-show="settingsShown"></settings-panel>
+	<chat-box ng-show="chatShown"></chat-box>
+
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom footer">
+	<div class="container-fluid">
+		<div class="navbar-text util-font-white">Codelaborate - Collaborative Code Editor</div>
+	</div>
+</nav>

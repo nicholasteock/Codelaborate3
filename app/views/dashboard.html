@@ -1,0 +1,157 @@
+<nav class="navbar navbar-default navbar-fixed-top header">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#/">
+				<img class="img-responsive" alt="Logo" src="images/logo.png">
+			</a>
+		</div>
+
+		<ul class="nav nav-pills navbar-top">
+			<li class="navbar-item"><a ng-click="runCode()"><span class="glyphicon glyphicon-play-circle"></span> Run</a></li>
+			<li class="navbar-item"><a ng-click="forkCode()"><span class="glyphicon glyphicon-duplicate"></span> Fork</a></li>
+			<li class="navbar-item"><a ng-click="downloadCode()"><span class="glyphicon glyphicon-save"></span> Download</a></li>
+		</ul>
+	</div>
+</nav>
+
+<!-- Loading spinner/status overlay -->
+<div class="loading-backdrop" ng-show="loading">
+	<div class="loader"></div>
+	<div class="center-block text-center util-font-white">
+		<h3>{{loadingStatus}}</h3>
+	</div>
+</div>
+
+<div class="container-fluid">
+	<div class="col-md-6 col-lg-6">
+		<div id="firepad"></div>
+	</div>
+	<div class="col-md-6 col-lg-6" style="height:75vh;">
+		<div class="output-editor" ui-ace="{
+		  useWrapMode : true,
+		  showGutter: false,
+		  theme:'chrome',
+		  onLoad: outputAceLoaded,
+		  onChange: outputAceChanged
+		}"></div>
+	</div>
+
+	<!-- Button toggles -->
+	<button type="button" class="btn btn-lg settings-button" tooltip="Settings" ng-click="settingsShown=!settingsShown" tooltip="Settings"><span class="glyphicon glyphicon-cog"></span></button>
+	<button type="button" class="btn btn-lg chat-button" tooltip="Chat Box" ng-click="chatShown=!chatShown"><span class="glyphicon glyphicon-comment"></span></button>
+	<button type="button" class="btn btn-lg whiteboard-button" tooltip="Whiteboard" data-toggle="modal" data-target="#whiteboard-modal"><span class="glyphicon glyphicon-blackboard" data-toggle="modal" data-target="#myModal"></span></button>
+	<!-- <button type="button" class="btn btn-lg whiteboard-button" tooltip="Whiteboard" ng-click="showWhiteboard()"><span class="glyphicon glyphicon-blackboard"></span></button> -->
+
+	<!-- Panels -->
+	<settings-panel ng-show="settingsShown"></settings-panel>
+	<chat-box room={{fileHash}}{{'/'}}{{codeVersion}} ng-show="chatShown" ng-controller="ChatboxCtrl"></chat-box>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom footer">
+	<div class="container-fluid">
+		<div class="navbar-text">Codelaborate - Collaborative code editor</div>
+		<form class="navbar-form navbar-right">
+			<span class="util-font-white">Collaborative Link - </span>
+			<input type="text" class="form-control pointer collaboration-link" value={{'http://codelaborate.com/'}}{{fileHash}}{{'/'}}{{codeVersion}} readonly>
+		</form>
+	</div>
+</nav>
+
+<!-- Modal -->
+<div class="modal fade" id="whiteboard-modal" tabindex="-1" ng-controller="WhiteboardCtrl">
+	<div ng-class="{'modal-dialog':true,'opaque':opaqueMode}">
+		<div class="modal-content">
+			<div class="modal-header">
+
+				<!-- Tool selection -->
+				<div class="btn-group">
+					<button type="button" class="btn btn-default disabled" tooltip="Change drawing tool" tooltip-placement="bottom">Tool</button>
+
+					<div class="btn-group" role="group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{tool}}
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li><a ng-click="changeTool('pencil')" class="">Pencil</a></li>
+							<li><a ng-click="changeTool('line')" class="">Line</a></li>
+							<li><a ng-click="changeTool('rectangle')" class="">Rectangle</a></li>
+							<li><a ng-click="changeTool('circle')" class="">Circle</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Line color selection -->
+				<div class="btn-group">
+					<button type="button" class="btn btn-default disabled" tooltip="Change line color" tooltip-placement="bottom">Line Color</button>
+
+					<div class="btn-group" role="group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							<div style="width:20px;height:20px;border-radius:3px;background-color:{{lineColor}}"></div>
+						</button>
+						<ul class="dropdown-menu whiteboard-color-dropdown" role="menu">
+							<li ng-repeat='color in colorOptions'><a class="whiteboard-color-option" ng-click="changeLineColor(color)"><div class="center-block" style="background-color:{{color}}"></div></a></li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Fill color selection -->
+				<div class="btn-group">
+					<button type="button" class="btn btn-default disabled" tooltip="Change shape fill color" tooltip-placement="bottom">Fill Color</button>
+
+					<div class="btn-group" role="group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							<div style="width:20px;height:20px;border-radius:3px;background-color:{{fillColor}}"></div>
+						</button>
+						<ul class="dropdown-menu whiteboard-color-dropdown" role="menu">
+							<li ng-repeat="color in colorOptions"><a class="whiteboard-color-option" ng-click="changeFillColor(color)"><div class="center-block" style="background-color:{{color}}"></div></a></li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Fill shape toggle -->
+				<div class="btn-group" ng-show="isToolNameSelected('rectangle', 'circle')">
+					<button type="button" class="btn btn-default disabled" tooltip="Change drawing tool" tooltip-placement="bottom">Fill Shape</button>
+					<button type="button" class="btn btn-default" ng-click="toggleFillShape()"><span ng-class="{'glyphicon': true, 'glyphicon-unchecked':!fillShape, 'glyphicon-check':fillShape}"></span></button>
+				</div>
+
+				<!-- Thickness selection -->
+				<div class="btn-group">
+					<button type="button" class="btn btn-default disabled" tooltip="Adjust line thickness" tooltip-placement="bottom">Thickness</button>
+
+					<div class="btn-group" role="group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{lineWidth}}
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li><a ng-click="changeLineWidth(1)" class="">1</a></li>
+							<li><a ng-click="changeLineWidth(2)" class="">2</a></li>
+							<li><a ng-click="changeLineWidth(3)" class="">3</a></li>
+							<li><a ng-click="changeLineWidth(4)" class="">4</a></li>
+							<li><a ng-click="changeLineWidth(5)" class="">5</a></li>
+							<li><a ng-click="changeLineWidth(6)" class="">6</a></li>
+							<li><a ng-click="changeLineWidth(7)" class="">7</a></li>
+							<li><a ng-click="changeLineWidth(8)" class="">8</a></li>
+							<li><a ng-click="changeLineWidth(9)" class="">9</a></li>
+							<li><a ng-click="changeLineWidth(10)" class="">10</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Undo button -->
+				<button type="button" class="btn btn-default" ng-click="undo()" tooltip="Undo" tooltip-placement="bottom">Undo</button>
+				
+				<!-- test -->
+				<button type="button" class="btn btn-default" ng-click="tester()" tooltip="tester" tooltip-placement="bottom">Test</button>
+
+				<!-- Opaque mode toggle -->
+				<button type="button" class="btn btn-default" ng-mouseover="makeOpaque(true)" ng-mouseleave="makeOpaque(false)">Opaque View</button>
+
+				<!-- Modal dismiss -->
+				<button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
+
+			</div>
+
+			<div class="modal-body">
+				<canvas id="whiteboard-canvas" width="1100" height="450" ng-mouseup="mouseup($event)" ng-mousedown="mousedown($event)" ng-mousemove="mousemove($event)"></canvas>
+			</div>
+		</div>
+	</div>
+</div>
