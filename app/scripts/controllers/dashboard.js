@@ -20,6 +20,7 @@ angular.module('codelaborateApp')
 		'ServerSocket',
 		'$modal',
 		function ($rootScope, $scope, $http, $q, $firebase, md5, $routeParams, Fireroom, ServerSocket, $modal) {
+			$scope.fireroom 		= Fireroom;
 			$scope.shareable 		= true;
 			$scope.loading 			= true;
 			$scope.loadingStatus 	= 'Working...';
@@ -46,12 +47,31 @@ angular.module('codelaborateApp')
 				'C++' 		: 'ace/mode/c_cpp',
 				'Java' 		: 'ace/mode/java'
 			};
+			
+			$scope.editFilename = false;
+			$scope.fileName 	= 'untitled';
 			$scope.userId 		= 'Guest' + Math.floor(Math.random()*9000) + 1000;
 			$scope.newUserId 	= $scope.userId;
 
 			var room 				= $routeParams.codeId+'/'+$routeParams.version;
 			var firepadRef 			= new Firebase('https://codelaborate-ace.firebaseio.com/'+room);
 			var lastCursorPosition 	= {};
+
+			var getFileExtension = function(language) {
+				var extension = '';
+				switch(language) {
+					case 'C':
+						extension = '.c';
+						break;
+					case 'C++':
+						extension = '.cpp';
+						break;
+					case 'Java':
+						extension = '.java';
+						break;
+				}
+				return extension;
+			};
 
 			var generateCompileAlias = function() {
 				var d 			= new Date(),
@@ -79,16 +99,24 @@ angular.module('codelaborateApp')
 				});
 			};
 
-			$scope.editor 	= ace.edit('firepad');
-			$scope.firepad 	= Firepad.fromACE(firepadRef, $scope.editor, {userId: $scope.userId});
-			$scope.firepad.on('ready', function(e) {
-			    $scope.changeEditorLanguage($scope.editorLanguage); // Set editor language
-			    $scope.changeEditorTheme($scope.editorTheme); // Set editor theme
-			    $scope.fireroom 		= Fireroom;
-			    $scope.fireroom.users 	= Fireroom.users;
-			    $scope.fireroom.chat 	= Fireroom.chat;
-			    $scope.fireroom.initFire(room);
-			    $scope.loading 			= false;
+			// Initialization. Checks if session exists first, before proceeding with editor, chat, wb inits.
+			$scope.fireroom.verifyRoom(room, function(roomExists) {
+				if(!roomExists) {
+					window.location.hash = '#/roomnotfound';
+					return;
+				}
+				else {
+					$scope.editor 	= ace.edit('firepad');
+					$scope.firepad 	= Firepad.fromACE(firepadRef, $scope.editor, {userId: $scope.userId});
+					$scope.firepad.on('ready', function(e) {
+					    $scope.changeEditorLanguage($scope.editorLanguage); // Set editor language
+					    $scope.changeEditorTheme($scope.editorTheme); // Set editor theme
+					    $scope.fireroom.users 	= Fireroom.users;
+					    $scope.fireroom.chat 	= Fireroom.chat;
+					    $scope.fireroom.initFire(room);
+					    $scope.loading 			= false;
+					});
+				}
 			});
 
 			$scope.changeEditorLanguage = function(newLanguage) {
@@ -150,36 +178,63 @@ angular.module('codelaborateApp')
 					return;
 				}
 
-				generateCompileAlias();
+				var modalInstance = $modal.open({
+					templateUrl 	: 'views/modals/runsettings.html',
+					controller 		: 'RunsettingsCtrl',
+					backdrop 		: true,
+					backdropClass 	: 'modal-backdrop',
+					size 			: 'sm',
+					resolve 		: {
+						modalInfo: function() {
+							return {
+								fileExtension: getFileExtension($scope.editorLanguage),
+								fileName: $scope.fileName
+							};
+						}
+					}
+				});
 
-				var params = {
-					code 		: code,
-					language 	: $scope.editorLanguage,
-					fileName 	: $scope.compileAlias
-				};
+				modalInstance.result.then(function(runSettings) {
+					console.log(runSettings);
 
-				$scope.loadingStatus = 'Compiling Code...';
-				$scope.loading = true; // Show loading overlay
-				var compilePromise = compileCode(params);
-				compilePromise.then(function(response) {
-					console.log('compilePromise success : ', response);
+					generateCompileAlias(); // Generate 'folder' for code
 
-					//Instantiate socket
-					$scope.serverSocket = ServerSocket;
-					$scope.serverSocket.socketFactory = ServerSocket.socketFactory;
-					$scope.serverSocket.connect();
+					var params = {
+						code 		: code,
+						language 	: $scope.editorLanguage,
+						dirName 	: $scope.compileAlias,
+						fileName 	: runSettings.fileName,
+						arguments 	: runSettings.arguments
+					};
 
-					$scope.loadingStatus = 'Running code...';
-					$scope.loading = false;
-					$scope.outputEditor.setReadOnly(false);
-					$scope.outputEditor.getSession().setValue('==========PROCESS START==========\n');
-					$scope.serverSocket.socketFactory.emit('execute', { fileName: $scope.compileAlias, language: $scope.editorLanguage});
-				}, function(error) {
-					$scope.loading = false;
-					console.log('compilePromise error : ', error);
-					$scope.outputEditor.setValue(error);
-					$scope.outputEditor.setReadOnly(true);
-					$scope.outputEditor.navigateFileEnd();
+					$scope.loadingStatus = 'Compiling Code...';
+					$scope.loading = true; // Show loading overlay
+					var compilePromise = compileCode(params);
+					compilePromise.then(function(response) {
+						console.log('compilePromise success : ', response);
+
+						//Instantiate socket
+						$scope.serverSocket = ServerSocket;
+						$scope.serverSocket.socketFactory = ServerSocket.socketFactory;
+						$scope.serverSocket.connect();
+
+						$scope.loadingStatus = 'Running code...';
+						$scope.loading = false;
+						$scope.outputEditor.setReadOnly(false);
+						$scope.outputEditor.getSession().setValue('==========PROCESS START==========\n');
+						$scope.serverSocket.socketFactory.emit('execute', { 
+							dirName 	: $scope.compileAlias,
+							fileName 	: runSettings.fileName,
+							language 	: $scope.editorLanguage,
+							arguments 	: runSettings.arguments
+						});
+					}, function(error) {
+						$scope.loading = false;
+						console.log('compilePromise error : ', error);
+						$scope.outputEditor.setValue(error);
+						$scope.outputEditor.setReadOnly(true);
+						$scope.outputEditor.navigateFileEnd();
+					});
 				});
 			};
 

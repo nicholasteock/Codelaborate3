@@ -30,6 +30,9 @@ angular
         templateUrl: 'views/dashboard.html',
         controller: 'DashboardCtrl'
       })
+      .when('/roomnotfound', {
+        templateUrl: 'views/roomnotfound.html'
+      })
       .otherwise({
         redirectTo: '/'
       });

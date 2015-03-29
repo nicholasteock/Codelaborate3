@@ -11,3 +11,18 @@
 .output-editor .ace_cursor {
 	border-left: 7px solid;
 }
+
+.editor-nav > li > a {
+	padding: 0.5vh 0.5vw;
+}
+
+.editor-nav .filename-input {
+	margin-right: 1rem;
+	max-width: 10rem;
+}
+.editor-nav .filename-input:disabled {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	border: none;
+}

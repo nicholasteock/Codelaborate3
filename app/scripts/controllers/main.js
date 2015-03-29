@@ -33,7 +33,27 @@ angular.module('codelaborateApp')
 			'Java' 		: 'ace/mode/java'
 		};
 
+		$scope.editFilename = false;
+		$scope.fileName 	= 'untitled';
+
 		var lastCursorPosition = {};
+
+		var getFileExtension = function(language) {
+			var extension = '';
+
+			switch(language) {
+				case 'C':
+					extension = '.c';
+					break;
+				case 'C++':
+					extension = '.cpp';
+					break;
+				case 'Java':
+					extension = '.java';
+					break;
+			}
+			return extension;
+		};
 
 		var generateFileHash = function() {
 			var d = new Date();
@@ -128,36 +148,63 @@ angular.module('codelaborateApp')
 				return;
 			}
 
-			generateCompileAlias();
+			var modalInstance = $modal.open({
+				templateUrl 	: 'views/modals/runsettings.html',
+				controller 		: 'RunsettingsCtrl',
+				backdrop 		: true,
+				backdropClass 	: 'modal-backdrop',
+				size 			: 'sm',
+				resolve 		: {
+					modalInfo: function() {
+						return {
+							fileExtension: getFileExtension($scope.editorLanguage),
+							fileName: $scope.fileName
+						};
+					}
+				}
+			});
 
-			var params = {
-				code 		: code,
-				language 	: $scope.editorLanguage,
-				fileName 	: $scope.compileAlias
-			};
+			modalInstance.result.then(function(runSettings) {
+				console.log(runSettings);
 
-			$scope.loadingStatus = "Compiling Code...";
-			$scope.loading = true; // Show loading overlay
-			var compilePromise = compileCode(params);
-			compilePromise.then(function(response) {
-				console.log('compilePromise success : ', response);
+				generateCompileAlias(); // Generate 'folder' for code
 
-				//Instantiate socket
-				$scope.serverSocket = ServerSocket;
-				$scope.serverSocket.socketFactory = ServerSocket.socketFactory;
-				$scope.serverSocket.connect();
+				var params = {
+					code 		: code,
+					language 	: $scope.editorLanguage,
+					dirName 	: $scope.compileAlias,
+					fileName 	: runSettings.fileName,
+					arguments 	: runSettings.arguments
+				};
 
-				$scope.loadingStatus = "Running code...";
-				$scope.loading = false;
-				$scope.outputEditor.setReadOnly(false);
-				$scope.outputEditor.getSession().setValue('==========PROCESS START==========\n');
-				$scope.serverSocket.socketFactory.emit('execute', { fileName: $scope.compileAlias, language: $scope.editorLanguage});
-			}, function(error) {
-				$scope.loading = false;
-				console.log('compilePromise error : ', error);
-				$scope.outputEditor.setValue(error);
-				$scope.outputEditor.setReadOnly(true);
-				$scope.outputEditor.navigateFileEnd();
+				$scope.loadingStatus = "Compiling Code...";
+				$scope.loading = true; // Show loading overlay
+				var compilePromise = compileCode(params);
+				compilePromise.then(function(response) {
+					console.log('compilePromise success : ', response);
+
+					//Instantiate socket
+					$scope.serverSocket = ServerSocket;
+					$scope.serverSocket.socketFactory = ServerSocket.socketFactory;
+					$scope.serverSocket.connect();
+
+					$scope.loadingStatus = "Running code...";
+					$scope.loading = false;
+					$scope.outputEditor.setReadOnly(false);
+					$scope.outputEditor.getSession().setValue('==========PROCESS START==========\n');
+					$scope.serverSocket.socketFactory.emit('execute', { 
+						dirName 	: $scope.compileAlias,
+						fileName 	: runSettings.fileName,
+						language 	: $scope.editorLanguage,
+						arguments 	: runSettings.arguments
+					});
+				}, function(error) {
+					$scope.loading = false;
+					console.log('compilePromise error : ', error);
+					$scope.outputEditor.setValue(error);
+					$scope.outputEditor.setReadOnly(true);
+					$scope.outputEditor.navigateFileEnd();
+				});
 			});
 		};
 

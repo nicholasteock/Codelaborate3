@@ -24,9 +24,23 @@
 
 <div class="container-fluid">
 	<div class="col-md-6 col-lg-6">
+
+		<!-- File name -->
+		<ul class="nav nav-tabs editor-nav">
+			<li class="active"><a>
+				<input type="text" class="filename-input" ng-model="fileName" ng-disabled="!editFilename" />
+				<span class="glyphicon glyphicon-pencil" ng-click="editFilename=!editFilename" ng-hide="editFilename"></span>
+				<span class="glyphicon glyphicon-ok" ng-click="editFilename=!editFilename" ng-show="editFilename"></span>
+			</a></li>
+		</ul>
+
+		<!-- Editor -->
 		<div id="firepad"></div>
+
 	</div>
 	<div class="col-md-6 col-lg-6" style="height:75vh;">
+
+		<!-- Output panel -->
 		<div class="output-editor" ui-ace="{
 		  useWrapMode : true,
 		  showGutter: false,
@@ -34,13 +48,13 @@
 		  onLoad: outputAceLoaded,
 		  onChange: outputAceChanged
 		}"></div>
+
 	</div>
 
 	<!-- Button toggles -->
 	<button type="button" class="btn btn-lg settings-button" tooltip="Settings" ng-click="settingsShown=!settingsShown" tooltip="Settings"><span class="glyphicon glyphicon-cog"></span></button>
 	<button type="button" class="btn btn-lg chat-button" tooltip="Chat Box" ng-click="chatShown=!chatShown"><span class="glyphicon glyphicon-comment"></span></button>
 	<button type="button" class="btn btn-lg whiteboard-button" tooltip="Whiteboard" data-toggle="modal" data-target="#whiteboard-modal"><span class="glyphicon glyphicon-blackboard" data-toggle="modal" data-target="#myModal"></span></button>
-	<!-- <button type="button" class="btn btn-lg whiteboard-button" tooltip="Whiteboard" ng-click="showWhiteboard()"><span class="glyphicon glyphicon-blackboard"></span></button> -->
 
 	<!-- Panels -->
 	<settings-panel ng-show="settingsShown"></settings-panel>
@@ -57,7 +71,7 @@
 	</div>
 </nav>
 
-<!-- Modal -->
+<!-- Whiteboard Modal -->
 <div class="modal fade" id="whiteboard-modal" tabindex="-1" ng-controller="WhiteboardCtrl">
 	<div ng-class="{'modal-dialog':true,'opaque':opaqueMode}">
 		<div class="modal-content">

@@ -247,7 +247,9 @@ var startWatching = false;
 		};
 
 		$scope.$on('wb_child_added', function() {
-			if(!startWatching) return;
+			if(!startWatching) {
+				return;
+			}
 			console.log('wb_child_added');
 			setTimeout(function() {
 				$scope.whiteboardFactory.renderAll();
@@ -255,7 +257,9 @@ var startWatching = false;
 		});
 
 		$scope.$on('wb_child_changed', function() {
-			if(!startWatching) return;
+			if(!startWatching) {
+				return;
+			}
 			console.log('wb_child_changed');
 			setTimeout(function() {
 				$scope.whiteboardFactory.renderAll();
@@ -263,7 +267,9 @@ var startWatching = false;
 		});
 
 		$scope.$on('wb_child_removed', function() {
-			if(!startWatching) return;
+			if(!startWatching) {
+				return;
+			}
 			console.log('wb_child_removed');
 			setTimeout(function() {
 				$scope.whiteboardFactory.renderAll();
