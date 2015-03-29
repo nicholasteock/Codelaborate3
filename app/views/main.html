@@ -26,6 +26,15 @@
 
 	<div class="col-md-6 col-lg-6">
 
+		<!-- File name -->
+		<ul class="nav nav-tabs editor-nav">
+			<li class="active"><a>
+				<input type="text" class="filename-input" ng-model="fileName" ng-disabled="!editFilename" />
+				<span class="glyphicon glyphicon-pencil" ng-click="editFilename=!editFilename" ng-hide="editFilename"></span>
+				<span class="glyphicon glyphicon-ok" ng-click="editFilename=!editFilename" ng-show="editFilename"></span>
+			</a></li>
+		</ul>
+
 		<!-- Editor -->
 		<div ui-ace="{
 		  useWrapMode : true,

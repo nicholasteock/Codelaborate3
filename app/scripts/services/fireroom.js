@@ -16,6 +16,14 @@ angular.module('codelaborateApp')
 		fireroom.chat 	= [];
 		fireroom.wb 	= [];
 
+		fireroom.verifyRoom = function(room, callback) {
+			console.log('room : ', room);
+			var roomRef = new Firebase('https://codelaborate-ace.firebaseio.com/');
+			roomRef.once('value', function(snapshot) {
+				return callback(snapshot.hasChild(room));
+			});
+		};
+
 		fireroom.initFire = function(room) {
 			var usersRef 	= new Firebase('https://codelaborate-ace.firebaseio.com/'+room+'/users');
 			fireroom.users 	= $firebase(usersRef).$asArray();
