@@ -5,32 +5,52 @@
 	<ng-form name="filenameForm">
 
 		<!-- File name -->
-		<h4>File Name</h4>
+		<h4> File Name</h4>
 		<div class="input-group">
 			<input type="text" name="fileName" class="form-control text-center" ng-model="fileName" placeholder="File name" required>
 			<span class="input-group-addon">{{fileExtension}}</span>
 		</div>
 
+		<hr />
+
 		<!-- Specify command line arguments (if any) -->
 		<h4>Arguments <small><em>(optional)</em></small></h4>
 
-		<div class="input-group" ng-repeat="arg in argumentsArray track by $index">
-			<input type="text" class="form-control" ng-model="argumentsArray[$index]" placeholder="New argument"/>
-			<span class="input-group-btn">
-				<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-minus" ng-click="removeArg($index)"></span></button>
-			</span>
-		</div>
+		<table class="table table-condensed">
+			<tr ng-repeat="arg in argumentsArray track by $index">
+				<td>
+					<div class="input-group">
+						<input type="text" class="form-control" ng-model="argumentsArray[$index]" placeholder="New argument"/>
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button" ng-click="removeArg($index)"><span class="glyphicon glyphicon-minus"></span></button>
+						</span>
+					</div>
+				</td>
+			</tr>
 
-		<div class="input-group">
-			<input type="text" class="form-control" ng-model="newArgument" placeholder="New argument">
-			<span class="input-group-btn">
-				<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus" ng-click="addArg()"></span></button>
-			</span>
+			<tr>
+				<td>
+					<div class="input-group">
+						<input type="text" class="form-control" ng-model="newArgument" placeholder="New argument">
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button" ng-click="addArg()"><span class="glyphicon glyphicon-plus"></span></button>
+						</span>
+					</div>
+				</td>
+			</tr>
+		</table>
+
+		<hr />
+
+		<!-- Additional options -->
+		<div ng-click="showWarnings=!showWarnings">
+			<span class="glyphicon glyphicon-unchecked" ng-hide="showWarnings"></span>
+			<span class="glyphicon glyphicon-check" ng-show="showWarnings"></span> Show warnings
 		</div>
 
 	</ng-form>
 </div>
 <div class="modal-footer text-center">
-	<button class="btn btn-success btn-block" ng-click="ok()" ng-disabled="filenameForm.$invalid">Done</button>
+	<button class="btn btn-success btn-block" ng-click="ok()" ng-disabled="filenameForm.$invalid">Start</button>
 	<button class="btn btn-danger btn-block" ng-click="cancel()">Cancel</button>
 </div>

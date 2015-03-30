@@ -143,19 +143,18 @@ angular.module('codelaborateApp')
 			$scope.forkCode = function() {
 				$scope.loadingStatus = 'Creating a new copy...';
 				$scope.loading 			= true;
-				var lines = $scope.editor.getValue();
 
-				var newVersion 	= Number($scope.codeVersion) + 1;
-				var fileHash 	= $scope.fileHash + '/' + newVersion;
-				
-				var ref      = new Firebase('https://codelaborate-ace.firebaseio.com/'+fileHash);
-				var headless = new Firepad.Headless(ref);
-				headless.setText(lines, function() {
-					console.log('Done : ', fileHash);
-					// window.location.hash = '#/'+fileHash;
-
-					$window.open('http://localhost:9000/#/'+fileHash,'_blank');
-					$scope.loading = false;
+				$scope.fireroom.getChildCount($scope.fileHash, function(childCount) {
+					var lines = $scope.editor.getValue();
+					var fileHash 	= $scope.fileHash + '/' + childCount;
+					
+					var ref      = new Firebase('https://codelaborate-ace.firebaseio.com/'+fileHash);
+					var headless = new Firepad.Headless(ref);
+					headless.setText(lines, function() {
+						console.log('Done : ', fileHash);
+						window.open('http://localhost:9000/#/'+fileHash,'_blank');
+						$scope.loading = false;
+					});
 				});
 			};
 
@@ -204,7 +203,8 @@ angular.module('codelaborateApp')
 						language 	: $scope.editorLanguage,
 						dirName 	: $scope.compileAlias,
 						fileName 	: runSettings.fileName,
-						arguments 	: runSettings.arguments
+						arguments 	: runSettings.arguments,
+						showWarnings: runSettings.showWarnings
 					};
 
 					$scope.loadingStatus = 'Compiling Code...';

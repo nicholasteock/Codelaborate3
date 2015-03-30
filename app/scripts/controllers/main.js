@@ -174,7 +174,8 @@ angular.module('codelaborateApp')
 					language 	: $scope.editorLanguage,
 					dirName 	: $scope.compileAlias,
 					fileName 	: runSettings.fileName,
-					arguments 	: runSettings.arguments
+					arguments 	: runSettings.arguments,
+					showWarnings: runSettings.showWarnings
 				};
 
 				$scope.loadingStatus = "Compiling Code...";
@@ -196,7 +197,8 @@ angular.module('codelaborateApp')
 						dirName 	: $scope.compileAlias,
 						fileName 	: runSettings.fileName,
 						language 	: $scope.editorLanguage,
-						arguments 	: runSettings.arguments
+						arguments 	: runSettings.arguments,
+						showWarnings: runSettings.showWarnings
 					});
 				}, function(error) {
 					$scope.loading = false;

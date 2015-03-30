@@ -11,7 +11,8 @@ angular.module('codelaborateApp')
 	.controller('RunsettingsCtrl', ['$scope', '$modalInstance', 'modalInfo', function ($scope, $modalInstance, modalInfo) {
 		$scope.fileExtension = modalInfo.fileExtension;
 		$scope.fileName = modalInfo.fileName;
-		$scope.argumentsArray = ['test'];
+		$scope.showWarnings = false;
+		$scope.argumentsArray = [];
 		$scope.newArgument = '';
 
 		$scope.addArg = function() {
@@ -25,9 +26,14 @@ angular.module('codelaborateApp')
 		};
 
 		$scope.ok = function() {
+			if($scope.newArgument !== '') {
+				$scope.argumentsArray.push($scope.newArgument);
+			}
+
 			var runSettings = {
 				fileName: $scope.fileName,
-				arguments: $scope.argumentsArray
+				arguments: $scope.argumentsArray,
+				showWarnings: $scope.showWarnings
 			};
 			$modalInstance.close(runSettings);
 		};
