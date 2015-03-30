@@ -17,10 +17,18 @@ angular.module('codelaborateApp')
 		fireroom.wb 	= [];
 
 		fireroom.verifyRoom = function(room, callback) {
-			console.log('room : ', room);
+			console.log('Verifying room : ', room);
 			var roomRef = new Firebase('https://codelaborate-ace.firebaseio.com/');
 			roomRef.once('value', function(snapshot) {
 				return callback(snapshot.hasChild(room));
+			});
+		};
+
+		fireroom.getChildCount = function(room, callback) {
+			console.log('Get child count : ', room);
+			var roomRef = new Firebase('https://codelaborate-ace.firebaseio.com/'+room);
+			roomRef.once('value', function(snapshot) {
+				return callback(snapshot.numChildren());
 			});
 		};
 
