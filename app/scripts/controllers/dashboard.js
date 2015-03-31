@@ -11,6 +11,7 @@ angular.module('codelaborateApp')
 	.controller('DashboardCtrl', [
 		'$rootScope',
 		'$scope',
+		'HOST_PARAMS',
 		'$http',
 		'$q',
 		'$firebase',
@@ -19,7 +20,7 @@ angular.module('codelaborateApp')
 		'Fireroom',
 		'ServerSocket',
 		'$modal',
-		function ($rootScope, $scope, $http, $q, $firebase, md5, $routeParams, Fireroom, ServerSocket, $modal) {
+		function ($rootScope, $scope, HOST_PARAMS, $http, $q, $firebase, md5, $routeParams, Fireroom, ServerSocket, $modal) {
 			$scope.fireroom 		= Fireroom;
 			$scope.shareable 		= true;
 			$scope.loading 			= true;
@@ -82,7 +83,7 @@ angular.module('codelaborateApp')
 
 			var compileCode = function(params) {
 				return $q(function(resolve, reject) {
-					$http.post('http://localhost:8080/compile', params).
+					$http.post(HOST_PARAMS.serverHost+'compile', params).
 					success(function(data, status, headers, config) {
 						console.log('Success response : ', data);
 						if(data.compileResult === 'success') {
@@ -167,7 +168,7 @@ angular.module('codelaborateApp')
 						$scope.$apply(function() {
 							$scope.loading=false;
 						});
-						window.open('http://localhost:9000/#/'+fileHash,'_blank');
+						window.open(HOST_PARAMS.clientHost+'#/'+fileHash,'_blank');
 					});
 				});
 			};
