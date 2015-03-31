@@ -8,7 +8,7 @@
  * Controller of the codelaborateApp
  */
 angular.module('codelaborateApp')
-	.controller('MainCtrl', ['$scope', '$http', '$q', '$firebase', 'md5', '$modal', 'ServerSocket', function ($scope, $http, $q, $firebase, md5, $modal, ServerSocket) {
+	.controller('MainCtrl', ['$scope', 'HOST_PARAMS', '$http', '$q', '$firebase', 'md5', '$modal', 'ServerSocket', function ($scope, HOST_PARAMS, $http, $q, $firebase, md5, $modal, ServerSocket) {
 		$scope.shareable 		= false;
 		$scope.loading 			= false;
 		$scope.loadingStatus 	= "Working...";
