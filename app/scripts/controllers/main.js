@@ -122,6 +122,9 @@ angular.module('codelaborateApp')
 			var lines 		= $scope.editor.getValue(),
 				firepadRef  = new Firebase('https://codelaborate-ace.firebaseio.com/'+$scope.fileHash+'/0'),
 				headless 	= new Firepad.Headless(firepadRef);
+
+			firepadRef.set({'name': $scope.fileName});
+
 			headless.setText(lines, function() {
 				window.location.hash = '#/'+$scope.fileHash+'/0';
 			});

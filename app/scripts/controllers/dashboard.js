@@ -119,6 +119,19 @@ angular.module('codelaborateApp')
 				}
 			});
 
+			$scope.fireroom.getChildCount($scope.fileHash, function(childCount) {
+				var temp = [];
+				for(var i=0;i<childCount; i++) {
+					temp.push(i);
+				}
+				$scope.childCount = temp;
+			});
+
+			$scope.changeFilename = function() {
+				$scope.editFilename = !$scope.editFilename;
+				firepadRef.update({'name': $scope.fileName});
+			};
+
 			$scope.changeEditorLanguage = function(newLanguage) {
 				$scope.editorLanguage = newLanguage;
 				$scope.editor.getSession().setMode($scope.editorLanguages[newLanguage]);
@@ -141,19 +154,20 @@ angular.module('codelaborateApp')
 			};
 
 			$scope.forkCode = function() {
-				$scope.loadingStatus = 'Creating a new copy...';
+				$scope.loadingStatus 	= 'Creating a new copy...';
 				$scope.loading 			= true;
 
 				$scope.fireroom.getChildCount($scope.fileHash, function(childCount) {
 					var lines = $scope.editor.getValue();
 					var fileHash 	= $scope.fileHash + '/' + childCount;
-					
+
 					var ref      = new Firebase('https://codelaborate-ace.firebaseio.com/'+fileHash);
 					var headless = new Firepad.Headless(ref);
 					headless.setText(lines, function() {
-						console.log('Done : ', fileHash);
+						$scope.$apply(function() {
+							$scope.loading=false;
+						});
 						window.open('http://localhost:9000/#/'+fileHash,'_blank');
-						$scope.loading = false;
 					});
 				});
 			};
@@ -166,6 +180,10 @@ angular.module('codelaborateApp')
 				}
 				var blob = new Blob([lines], {type: 'text/plain;charset=utf-8'});
 				saveAs(blob, 'savedfile.txt');
+			};
+
+			$scope.changeVersion = function(version) {
+				window.location.hash = '#/'+$routeParams.codeId+'/'+version;
 			};
 
 			// First make call to compile code. To catch compilation errors.
@@ -281,6 +299,10 @@ angular.module('codelaborateApp')
 				$scope.outputEditor.getSession().insert(insertAt,'\n==========PROCESS ENDED==========\n');
 				$scope.outputEditor.setReadOnly(true);
 				$scope.serverSocket.disconnect();
+			});
+
+			firepadRef.child('name').on('value', function(snapshot) {
+				$scope.fileName = snapshot.val();
 			});
 
 			/***************************************************************************/

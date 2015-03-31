@@ -1,16 +1,26 @@
 <nav class="navbar navbar-default navbar-fixed-top header">
 	<div class="container-fluid">
+
+		<!-- Codelaborate Logo -->
 		<div class="navbar-header">
 			<a class="navbar-brand" href="#/">
 				<img class="img-responsive" alt="Logo" src="images/logo.png">
 			</a>
 		</div>
 
+		<!-- Nav options -->
 		<ul class="nav nav-pills navbar-top">
 			<li class="navbar-item"><a ng-click="runCode()"><span class="glyphicon glyphicon-play-circle"></span> Run</a></li>
 			<li class="navbar-item"><a ng-click="forkCode()"><span class="glyphicon glyphicon-duplicate"></span> Fork</a></li>
 			<li class="navbar-item"><a ng-click="downloadCode()"><span class="glyphicon glyphicon-save"></span> Download</a></li>
+			<li class="navbar-item dropdown">
+				<a class="" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list"></span> Current version: {{codeVersion}}</a>
+				<ul class="dropdown-menu">
+					 <li ng-repeat="childIndex in childCount"><a ng-click="changeVersion(childIndex)">Version {{childIndex}}</a></li>
+				</ul>
+			</li>
 		</ul>
+
 	</div>
 </nav>
 
@@ -30,7 +40,7 @@
 			<li class="active"><a>
 				<input type="text" class="filename-input" ng-model="fileName" ng-disabled="!editFilename" />
 				<span class="glyphicon glyphicon-pencil" ng-click="editFilename=!editFilename" ng-hide="editFilename"></span>
-				<span class="glyphicon glyphicon-ok" ng-click="editFilename=!editFilename" ng-show="editFilename"></span>
+				<span class="glyphicon glyphicon-ok" ng-click="changeFilename()" ng-show="editFilename"></span>
 			</a></li>
 		</ul>
 
@@ -38,6 +48,7 @@
 		<div id="firepad"></div>
 
 	</div>
+
 	<div class="col-md-6 col-lg-6" style="height:75vh;">
 
 		<!-- Output panel -->
@@ -150,10 +161,10 @@
 				</div>
 
 				<!-- Undo button -->
-				<button type="button" class="btn btn-default" ng-click="undo()" tooltip="Undo" tooltip-placement="bottom">Undo</button>
+				<button type="button" class="btn btn-default hide" ng-click="undo()" tooltip="Undo" tooltip-placement="bottom">Undo</button>
 				
 				<!-- test -->
-				<button type="button" class="btn btn-default" ng-click="tester()" tooltip="tester" tooltip-placement="bottom">Test</button>
+				<button type="button" class="btn btn-default hide" ng-click="tester()" tooltip="tester" tooltip-placement="bottom">Test</button>
 
 				<!-- Opaque mode toggle -->
 				<button type="button" class="btn btn-default" ng-mouseover="makeOpaque(true)" ng-mouseleave="makeOpaque(false)">Opaque View</button>
