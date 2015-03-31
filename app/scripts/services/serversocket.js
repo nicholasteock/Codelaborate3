@@ -8,8 +8,9 @@
  * Factory in the fypApp.
  */
 angular.module('codelaborateApp')
-	.factory('ServerSocket', function (socketFactory) {
-		var ioSocketPath = 'http://localhost:8080/run';
+	.factory('ServerSocket',['HOST_PARAMS', 'socketFactory', function (HOST_PARAMS, socketFactory) {
+		var ioSocketPath = HOST_PARAMS.serverHost+'run';
+		// var ioSocketPath = 'http://localhost:8080/run';
 
 		var serverSocket = {};
 		serverSocket.socketFactory = {};
@@ -30,4 +31,4 @@ angular.module('codelaborateApp')
 		};
 
 		return serverSocket;
-	});
+	}]);

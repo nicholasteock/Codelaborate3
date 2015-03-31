@@ -70,7 +70,7 @@ angular.module('codelaborateApp')
 
 		var compileCode = function(params) {
 			return $q(function(resolve, reject) {
-				$http.post('http://localhost:8080/compile', params).
+				$http.post(HOST_PARAMS.serverHost+'compile', params).
 				success(function(data, status, headers, config) {
 					console.log('Success response : ', data);
 					if(data.compileResult === 'success') {
