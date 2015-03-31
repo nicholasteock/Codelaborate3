@@ -168,7 +168,7 @@ angular.module('codelaborateApp')
 						$scope.$apply(function() {
 							$scope.loading=false;
 						});
-						window.open(HOST_PARAMS.clientHost+'#/'+fileHash,'_blank');
+						window.open(HOST_PARAMS.clientHost+fileHash,'_blank');
 					});
 				});
 			};
