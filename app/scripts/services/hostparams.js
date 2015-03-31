@@ -10,6 +10,6 @@
 angular.module('codelaborateApp')
 	.constant('HOST_PARAMS', {
 		// clientHost 	: 'http://localhost:9000/',
-		clientHost 	: 'http://hosting.nicholasteock.github.io/web/codelaborate/#/',
+		clientHost 	: 'http://hosting.nicholasteock.com/web/codelaborate/#/',
 		serverHost 	: 'http://54.149.141.165:8080/'
 	});
