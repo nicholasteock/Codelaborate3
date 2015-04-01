@@ -136,6 +136,7 @@ angular.module('codelaborateApp')
 			$scope.changeEditorLanguage = function(newLanguage) {
 				$scope.editorLanguage = newLanguage;
 				$scope.editor.getSession().setMode($scope.editorLanguages[newLanguage]);
+				firepadRef.update({'language': newLanguage});
 			};
 
 			$scope.changeEditorTheme = function(newTheme) {
@@ -304,6 +305,11 @@ angular.module('codelaborateApp')
 
 			firepadRef.child('name').on('value', function(snapshot) {
 				$scope.fileName = snapshot.val();
+			});
+			firepadRef.child('language').on('value', function(snapshot) {
+				var language = snapshot.val();
+				$scope.editorLanguage = language;
+				$scope.editor.getSession().setMode($scope.editorLanguages[language]);
 			});
 
 			/***************************************************************************/
