@@ -14,7 +14,7 @@ angular.module('codelaborateApp')
 		$scope.loadingStatus 	= "Working...";
 		$scope.listeningForInput= false;
 		$scope.settingsShown 	= false;
-		$scope.editorLanguage 	= 'Java';
+		$scope.editorLanguage 	= 'C++';
 		$scope.editorTheme 		= 'Monokai';
 		$scope.editorThemes 	= {
 			'Monokai' 	: "ace/theme/monokai",
@@ -123,7 +123,7 @@ angular.module('codelaborateApp')
 				firepadRef  = new Firebase('https://codelaborate-ace.firebaseio.com/'+$scope.fileHash+'/0'),
 				headless 	= new Firepad.Headless(firepadRef);
 
-			firepadRef.set({'name': $scope.fileName});
+			firepadRef.set({'name': $scope.fileName, 'language': $scope.editorLanguage});
 
 			headless.setText(lines, function() {
 				window.location.hash = '#/'+$scope.fileHash+'/0';
