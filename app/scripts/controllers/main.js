@@ -11,20 +11,20 @@ angular.module('codelaborateApp')
 	.controller('MainCtrl', ['$scope', 'HOST_PARAMS', '$http', '$q', '$firebase', 'md5', '$modal', 'ServerSocket', function ($scope, HOST_PARAMS, $http, $q, $firebase, md5, $modal, ServerSocket) {
 		$scope.shareable 		= false;
 		$scope.loading 			= false;
-		$scope.loadingStatus 	= "Working...";
+		$scope.loadingStatus 	= 'Working...';
 		$scope.listeningForInput= false;
 		$scope.settingsShown 	= false;
 		$scope.editorLanguage 	= 'C++';
 		$scope.editorTheme 		= 'Monokai';
 		$scope.editorThemes 	= {
-			'Monokai' 	: "ace/theme/monokai",
-			'Twilight' 	: "ace/theme/twilight",
-			'Cobalt' 	: "ace/theme/cobalt",
-			'Chrome' 	: "ace/theme/chrome",
-			'Ambiance' 	: "ace/theme/ambiance",
-			'Chaos' 	: "ace/theme/chaos",
-			'Dawn' 		: "ace/theme/dawn",
-			'Terminal' 	: "ace/theme/terminal"
+			'Monokai' 	: 'ace/theme/monokai',
+			'Twilight' 	: 'ace/theme/twilight',
+			'Cobalt' 	: 'ace/theme/cobalt',
+			'Chrome' 	: 'ace/theme/chrome',
+			'Ambiance' 	: 'ace/theme/ambiance',
+			'Chaos' 	: 'ace/theme/chaos',
+			'Dawn' 		: 'ace/theme/dawn',
+			'Terminal' 	: 'ace/theme/terminal'
 		};
 		$scope.editorLanguage 	= 'C++';
 		$scope.editorLanguages 	= {
@@ -111,7 +111,7 @@ angular.module('codelaborateApp')
 			$scope.editor 	= _editor;
 			$scope.changeEditorLanguage($scope.editorLanguage); // Set editor language
 		    $scope.changeEditorTheme($scope.editorTheme); // Set editor theme
-			$scope.editor.getSession().setValue("Welcome to Codelaborate!\n\nCode your program right here, and click 'Run' to execute it right here!\n\nThe current language setting is: C++.\nChange that with the settings panel on the right.\n\nCodelaborate with your friends by clicking 'Save' and sharing the unique link given to you!\n\nHave fun!");
+			$scope.editor.getSession().setValue('Welcome to Codelaborate!\n\nCode your program right here, and click \'Run\' to execute it right here!\n\nThe current language setting is: C++.\nChange that with the settings panel on the right.\n\nCodelaborate with your friends by clicking \'Upload for sharing\' and sharing the unique link given to you!\n\nHave fun!');
 			generateFileHash();
 		};
 
@@ -130,16 +130,37 @@ angular.module('codelaborateApp')
 			});
 		};
 
-		$scope.downloadCode = function() {
-			var lines = $scope.editor.getValue();
+		$scope.fileSelected = function(element) {
+			$scope.$apply(function(scope) {
+				var userFile = element.files[0];
+				var fileName = userFile.name.replace(/\.java|\.cpp|\.c|\.txt/g, '');
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					$scope.$apply(function() {
+						$scope.loading=false;
+					});
+					$scope.fileName = fileName;
+					$scope.editor.getSession().setValue(e.target.result);
+				};
+				reader.onprogress = function() {
+					$scope.$apply(function() {
+						$scope.loadingStatus = 'Processing file...';
+						$scope.loading=false;
+					});
+				};
+				reader.readAsText(userFile);
+			});
+		};
 
+		$scope.downloadCode = function() {
+			var lines 		= $scope.editor.getValue(),
+				extension 	= getFileExtension($scope.editorLanguage);
 			if(lines.length === 0) {
 				alert('Document is blank.');
 				return;
 			}
-
-			var blob = new Blob([lines], {type: "text/plain;charset=utf-8"});
-			saveAs(blob, $scope.fileHash+".txt");
+			var blob = new Blob([lines], {type: 'text/plain;charset=utf-8'});
+			saveAs(blob, $scope.fileName+extension);
 		};
 
 		// First make call to compile code. To catch compilation errors.
@@ -181,7 +202,7 @@ angular.module('codelaborateApp')
 					showWarnings: runSettings.showWarnings
 				};
 
-				$scope.loadingStatus = "Compiling Code...";
+				$scope.loadingStatus = 'Compiling Code...';
 				$scope.loading = true; // Show loading overlay
 				var compilePromise = compileCode(params);
 				compilePromise.then(function(response) {
@@ -192,7 +213,7 @@ angular.module('codelaborateApp')
 					$scope.serverSocket.socketFactory = ServerSocket.socketFactory;
 					$scope.serverSocket.connect();
 
-					$scope.loadingStatus = "Running code...";
+					$scope.loadingStatus = 'Running code...';
 					$scope.loading = false;
 					$scope.outputEditor.setReadOnly(false);
 					$scope.outputEditor.getSession().setValue('==========PROCESS START==========\n');
@@ -216,15 +237,19 @@ angular.module('codelaborateApp')
 		$scope.outputAceLoaded = function(_editor) {
 			$scope.outputEditor = _editor;
 			$scope.outputEditor.setShowPrintMargin(false);
-			$scope.outputEditor.getSession().setValue("This is the output terminal.\n\nClick 'Run' to see your code in action right here.");
+			$scope.outputEditor.getSession().setValue('This is the output terminal.\n\nClick \'Run\' to see your code in action right here.');
 			$scope.outputEditor.setReadOnly(true);
 		};
 
 		$scope.outputAceChanged = function(e) {
-			if(!$scope.listeningForInput) return;
+			if(!$scope.listeningForInput) {
+				return;
+			}
 			// $scope.listeningForInput = false; // Stop registering further inputs
 			var data = e[0].data;
-			if(!$scope.serverSocket) return;
+			if(!$scope.serverSocket) {
+				return;
+			}
 			if(data.action==='insertText' && data.text==='\n') {
 				var inputRowContent = $scope.outputEditor.getSession().getLine(lastCursorPosition.row);
 				var inputContent = inputRowContent.substr(lastCursorPosition.column);

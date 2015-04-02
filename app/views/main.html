@@ -9,6 +9,10 @@
 		<ul class="nav nav-pills navbar-top">
 			<li class="navbar-item"><a ng-click="runCode()"><span class="glyphicon glyphicon-play-circle"></span> Run</a></li>
 			<li class="navbar-item"><a ng-click="saveCode()"><span class="glyphicon glyphicon-cloud-upload"></span> Upload For Sharing</a></li>
+			<li class="navbar-item openfile-item">
+				<span class="glyphicon glyphicon-folder-open align-glyphicon"></span>
+				<input ng-model="userFile" onchange="angular.element(this).scope().fileSelected(this)" type="file" accept=".cpp,.c,.java" class="open-file-button"/>
+			</li>
 			<li class="navbar-item"><a ng-click="downloadCode()"><span class="glyphicon glyphicon-save"></span> Download</a></li>
 		</ul>
 	</div>

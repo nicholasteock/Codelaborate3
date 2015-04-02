@@ -175,13 +175,14 @@ angular.module('codelaborateApp')
 			};
 
 			$scope.downloadCode = function() {
-				var lines = $scope.editor.getValue();
+				var lines = $scope.editor.getValue(),
+					extension = getFileExtension($scope.editorLanguage);
 				if(lines.length === 0) {
 					alert('Document is blank.');
 					return;
 				}
 				var blob = new Blob([lines], {type: 'text/plain;charset=utf-8'});
-				saveAs(blob, 'savedfile.txt');
+				saveAs(blob, $scope.fileName+extension);
 			};
 
 			$scope.changeVersion = function(version) {
