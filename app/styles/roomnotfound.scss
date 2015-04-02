@@ -1,0 +1,18 @@
+.roomnotfound-container {
+	width:100vw;
+	height:100vh;
+	position:absolute;
+	top:0;
+	background-image:url('../images/404.jpg');
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+.roomnotfound-content {
+	width: 35vw;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	height: 35vh;
+	background-color: #fff;
+	padding: 3vw;
+}

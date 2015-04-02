@@ -47,7 +47,7 @@ body {
   .navbar-top {
     padding-top: 5px;
   }
-  .navbar-top .navbar-item > a {
+  .navbar-top .navbar-item, .navbar-top .navbar-item > a {
     cursor: pointer;
     color: #FFF;
   }
@@ -77,6 +77,39 @@ body {
   }
   .navbar-top .dropdown-menu > li > a:hover {
     background-color: #0c1087;
+  }
+
+  .openfile-item > .glyphicon {
+    vertical-align: top;
+  }
+
+  .openfile-item {
+    padding: 10px 15px;
+  }
+
+  .open-file-button {
+    width: 6rem;
+    height: 2rem;
+    margin-left: 5px;
+    overflow: hidden;
+    display: inline-block;
+    // right: 3px;
+  }
+  .open-file-button::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+  .open-file-button::before {
+    content: 'Open File';
+    width: 6rem;
+    height: 2rem;
+    position: absolute;
+    cursor: pointer;
+  }
+  .open-file-button:hover::before {
+    opacity: 0.8;
+  }
+  .open-file-button:active::before {
+    outline: none !important;
   }
 }
 
@@ -162,3 +195,4 @@ body {
 @import 'settings';
 @import 'modals';
 @import 'whiteboard';
+@import 'roomnotfound';
