@@ -119,6 +119,9 @@ angular.module('codelaborateApp')
 		};
 
 		$scope.saveCode = function() {
+			$scope.loadingStatus 	= 'Uploading Code...';
+			$scope.loading 			= true;
+
 			var lines 		= $scope.editor.getValue(),
 				firepadRef  = new Firebase('https://codelaborate-ace.firebaseio.com/'+$scope.fileHash+'/0'),
 				headless 	= new Firepad.Headless(firepadRef);
@@ -126,6 +129,9 @@ angular.module('codelaborateApp')
 			firepadRef.set({'name': $scope.fileName, 'language': $scope.editorLanguage});
 
 			headless.setText(lines, function() {
+				$scope.$apply(function() {
+					$scope.loading=false;
+				});
 				window.location.hash = '#/'+$scope.fileHash+'/0';
 			});
 		};
