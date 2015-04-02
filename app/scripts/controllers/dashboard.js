@@ -165,6 +165,9 @@ angular.module('codelaborateApp')
 
 					var ref      = new Firebase('https://codelaborate-ace.firebaseio.com/'+fileHash);
 					var headless = new Firepad.Headless(ref);
+
+					ref.set({'name': $scope.fileName, 'language': $scope.editorLanguage});
+
 					headless.setText(lines, function() {
 						$scope.$apply(function() {
 							$scope.loading=false;
