@@ -284,6 +284,10 @@ angular.module('codelaborateApp')
 				}
 			};
 
+			$scope.launchChatroom = function() {
+				
+			}
+
 			// Outputs content passed from node server onto output editor.
 			$scope.$on('socket:output', function (ev, data) {
 				$scope.listeningForInput = false;

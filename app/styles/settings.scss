@@ -17,16 +17,16 @@
 }
 .chat-button {
 	position: absolute;
-	right: 5vw;
+	right: 10vw;
 	bottom: 10vh;
 	margin-right: 1vw;
 	z-index: 2;
-	background-color: #16a085;
-	box-shadow: #3dbd96 3px 3px;
+	background-color: #1abc9c;
+	box-shadow: #16a085 3px 3px;
 	font-size: 20px;
 }
 .chat-button:active {
-	box-shadow: #3dbd96 3px 3px inset;
+	box-shadow: #16a085 3px 3px inset;
 	color: #FFF;
 }
 .chat-button:focus, .chat-button:active:focus {
@@ -34,7 +34,7 @@
 }
 .whiteboard-button {
 	position: absolute;
-	right: 10vw;
+	right: 15vw;
 	bottom: 10vh;
 	margin-right: 1vw;
 	z-index: 2;  
@@ -133,4 +133,25 @@
 .chat-panel .message-panel .chat, .chat-panel .message-panel .userlist {
 	height: 100%;
 	overflow: scroll;
+}
+
+.call-button {
+	position: absolute;
+	right: 5vw;
+	bottom: 10vh;
+	margin-right: 1vw;
+	z-index: 2;
+	background-color: #3498db;
+	box-shadow: #1888d3 3px 3px;
+	font-size: 20px;
+}
+.call-button:active {
+	box-shadow: #1888d3 3px 3px inset;
+	color: #FFF;
+}
+.call-button:focus, .call-button:active:focus {
+	outline: none;
+}
+.call-button > a {
+	color: rgb(51,51,51);
 }

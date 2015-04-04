@@ -64,6 +64,7 @@
 
 	<!-- Button toggles -->
 	<button type="button" class="btn btn-lg settings-button" tooltip="Settings" ng-click="settingsShown=!settingsShown" tooltip="Settings"><span class="glyphicon glyphicon-cog"></span></button>
+	<button type="button" class="btn btn-lg call-button" tooltip="Voice Chat" ng-click="launchChatroom()"><a href="#/call/{{fileHash}}/{{codeVersion}}" target="_blank"><span class="glyphicon glyphicon-facetime-video"></span></a></button>
 	<button type="button" class="btn btn-lg chat-button" tooltip="Chat Box" ng-click="chatShown=!chatShown"><span class="glyphicon glyphicon-comment"></span></button>
 	<button type="button" class="btn btn-lg whiteboard-button" tooltip="Whiteboard" data-toggle="modal" data-target="#whiteboard-modal"><span class="glyphicon glyphicon-blackboard" data-toggle="modal" data-target="#myModal"></span></button>
 
