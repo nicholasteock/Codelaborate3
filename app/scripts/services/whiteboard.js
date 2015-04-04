@@ -84,7 +84,7 @@ angular.module('codelaborateApp')
 			whiteboardFactory.context.clearRect(0, 0, whiteboardFactory.canvas.width, whiteboardFactory.canvas.height);
 			console.log('BUFFER : ', buffer);
 			angular.forEach(buffer, function(record) {
-				console.log('RECORD : ', record);
+				// console.log('RECORD : ', record);
 				switch (record.ToolName) {
 					case 'pencil':
 						whiteboardFactory.renderPencil(record);

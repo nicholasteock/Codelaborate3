@@ -19,6 +19,13 @@ body {
   padding-bottom: 20px;
 }
 
+video {
+  display: inline-block;
+  width: 24vw;
+  margin-left: 1vw;
+  float: left;
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,

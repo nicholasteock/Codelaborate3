@@ -30,6 +30,10 @@ angular
         templateUrl: 'views/dashboard.html',
         controller: 'DashboardCtrl'
       })
+      .when('/call/:codeId/:version', {
+        templateUrl: 'views/call.html',
+        controller: 'CallCtrl'
+      })
       .when('/roomnotfound', {
         templateUrl: 'views/roomnotfound.html'
       })
