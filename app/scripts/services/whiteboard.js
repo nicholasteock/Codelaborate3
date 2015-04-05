@@ -15,12 +15,12 @@ angular.module('codelaborateApp')
 
 		whiteboardFactory.initBuffer = function() {
 			whiteboardFactory.buffer = Fireroom.wb;
-			console.log('initBuffer : ', whiteboardFactory.buffer);
+			// console.log('initBuffer : ', whiteboardFactory.buffer);
 			return;
 		};
 
 		whiteboardFactory.setContext = function (ctx) {
-			console.log('set context : ', ctx);
+			// console.log('set context : ', ctx);
 			whiteboardFactory.context = ctx;
 		};
 
@@ -77,12 +77,12 @@ angular.module('codelaborateApp')
 		};
 
 		whiteboardFactory.renderAll = function () {
-			console.log('in renderAll', whiteboardFactory.buffer);
+			// console.log('in renderAll', whiteboardFactory.buffer);
 
 			var buffer = whiteboardFactory.buffer;
 
 			whiteboardFactory.context.clearRect(0, 0, whiteboardFactory.canvas.width, whiteboardFactory.canvas.height);
-			console.log('BUFFER : ', buffer);
+			// console.log('BUFFER : ', buffer);
 			angular.forEach(buffer, function(record) {
 				// console.log('RECORD : ', record);
 				switch (record.ToolName) {
@@ -106,12 +106,12 @@ angular.module('codelaborateApp')
 		};
 
 		whiteboardFactory.setBuffer = function(input) {
-			console.log('In set buffer : ', input);
+			// console.log('In set buffer : ', input);
 			whiteboardFactory.buffer = input;
 		};
 
 		whiteboardFactory.addToBuffer = function (data) {
-			console.log(data);
+			// console.log(data);
 			whiteboardFactory.buffer.$add(data);
 			// whiteboardFactory.buffer.push(data);
 			// buffer.$add(data);
@@ -143,6 +143,10 @@ angular.module('codelaborateApp')
 
 		whiteboardFactory.undo = function () {
 			whiteboardFactory.buffer.pop();   
+		};
+
+		whiteboardFactory.clearAll = function() {
+			Fireroom.clearWb();
 		};
 
 		return whiteboardFactory;

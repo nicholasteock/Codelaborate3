@@ -167,6 +167,9 @@
 				<!-- Undo button -->
 				<button type="button" class="btn btn-default hide" ng-click="undo()" tooltip="Undo" tooltip-placement="bottom">Undo</button>
 				
+				<!-- Clear all button -->
+				<button type="button" class="btn btn-danger" ng-click="clearAll()" tooltip="Clear entire whiteboard" tooltip-placement="bottom">Clear</button>
+
 				<!-- test -->
 				<button type="button" class="btn btn-default hide" ng-click="tester()" tooltip="tester" tooltip-placement="bottom">Test</button>
 
@@ -179,7 +182,7 @@
 			</div>
 
 			<div class="modal-body">
-				<canvas id="whiteboard-canvas" width="1100" height="450" ng-mouseup="mouseup($event)" ng-mousedown="mousedown($event)" ng-mousemove="mousemove($event)"></canvas>
+				<canvas id="whiteboard-canvas" width="1100" height="550" ng-mouseup="mouseup($event)" ng-mousedown="mousedown($event)" ng-mousemove="mousemove($event)"></canvas>
 			</div>
 		</div>
 	</div>
