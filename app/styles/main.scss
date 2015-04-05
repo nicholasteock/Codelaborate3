@@ -51,38 +51,35 @@ video {
     width: 150px;
     padding: 5px;
   }
-  .navbar-top {
-    padding-top: 5px;
-  }
-  .navbar-top .navbar-item, .navbar-top .navbar-item > a {
+  .main-nav .navbar-item, .main-nav .navbar-item > a {
     cursor: pointer;
     color: #FFF;
   }
-  .navbar-top .navbar-item > a:hover {
+  .main-nav .navbar-item > a:hover {
     background-color: transparent;
     opacity: 0.8;
     box-shadow: #1e043c 2px 2px inset;
   }
-  .navbar-top .navbar-item.active > a {
+  .main-nav .navbar-item.active > a {
     background-color: #1e043c;
   
     :hover {
       background-color: #1e043c;
     }
   }
-  .navbar-top .open > a {
+  .main-nav .open > a {
     background-color: #2F33AA;
     opacity: 0.8;
     box-shadow: #1e043c 2px 2px inset;
   }
-  .navbar-top .dropdown-menu {
+  .main-nav .dropdown-menu {
     background-color: #2F33AA;
   }
-  .navbar-top .dropdown-menu > li > a {
+  .main-nav .dropdown-menu > li > a {
     cursor: pointer;
     color: #FFF;
   }
-  .navbar-top .dropdown-menu > li > a:hover {
+  .main-nav .dropdown-menu > li > a:hover {
     background-color: #0c1087;
   }
 
