@@ -155,3 +155,17 @@
 .call-button > a {
 	color: rgb(51,51,51);
 }
+
+.new-button {
+	z-index: 2;
+	margin-top:1.5vh;
+	margin-right: 0.5vw;
+	color: rgb(51,51,51);
+}
+.new-button:active {
+	box-shadow: #1888d3 3px 3px inset;
+	color: #FFF;
+}
+.new-button:focus, .new-button:active:focus {
+	outline: none;
+}
