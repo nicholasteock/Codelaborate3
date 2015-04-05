@@ -9,12 +9,11 @@
  */
 angular.module('codelaborateApp')
 	.controller('WhiteboardCtrl', ['$scope', 'Fireroom', 'WhiteboardFactory', function ($scope, Fireroom, WhiteboardFactory) {
-var startWatching = false;
+		var startWatching = false;
 		var canvas,
 			context,
-			backgroundImage,
-			offsetY = 90,  // mouse cursor offset
-			offsetX = 40,  // mouse cursor offset
+			offsetY = 0,  // mouse cursor offset
+			offsetX = 0,  // mouse cursor offset
 			points = [],
 			mouseDown = false,
 			startPos = { x: 0, y: 0 },
@@ -136,14 +135,16 @@ var startWatching = false;
 		};
 
 		$scope.mousedown = function (e) {
-			console.log('mouse down');
+			offsetX = Number($('#whiteboard-modal .modal-dialog').css('margin-left').replace('px',''));
+			offsetY = Number($('#whiteboard-modal .modal-dialog').css('margin-top').replace('px','')) + $('#whiteboard-modal .modal-header').outerHeight();
+
 			var data;
 
 			points.push({
-				x: (e.pageX - canvas.offsetLeft) - offsetX,
-				y: (e.pageY - canvas.offsetTop) - offsetY,
+				x: (e.pageX - offsetX),
+				y: (e.pageY - offsetY),
 				color: $scope.lineColor
-			});			
+			});
 
 			mouseDown = true;
 
@@ -161,8 +162,8 @@ var startWatching = false;
 			var x, y, lastPoint, data;
 
 			if (mouseDown) {
-				x = (e.pageX - canvas.offsetLeft) - offsetX;
-				y = (e.pageY - canvas.offsetTop) - offsetY;
+				x = (e.pageX - offsetX);
+				y = (e.pageY - offsetY);
 
 				points.push({
 					x: x,
@@ -179,14 +180,13 @@ var startWatching = false;
 			}			
 		};
 
-		$scope.mouseup = function (e) {
+		$scope.mouseup = function () {
 			console.log('mouse up');
 			var data;
 
 			mouseDown = false;
 			data = createRenderObject();
 			$scope.whiteboardFactory.addToBuffer(data);
-			console.log('mouseup : ', $scope.whiteboardFactory.buffer);
 
 			points = [];
 			startPos.x = 0;
@@ -235,15 +235,19 @@ var startWatching = false;
 			$scope.colorTarget = target;
 		};
 
-		$scope.undo = function () {
-			$scope.whiteboardFactory.undo();
-			$scope.whiteboardFactory.renderAll();
+		// $scope.undo = function () {
+		// 	$scope.whiteboardFactory.undo();
+		// 	$scope.whiteboardFactory.renderAll();
 
-			points = [];
-			startPos.x = 0;
-			startPos.y = 0;
-			endPos.x = 0;
-			endPos.y = 0;
+		// 	points = [];
+		// 	startPos.x = 0;
+		// 	startPos.y = 0;
+		// 	endPos.x = 0;
+		// 	endPos.y = 0;
+		// };
+
+		$scope.clearAll = function() {
+			$scope.whiteboardFactory.clearAll();
 		};
 
 		$scope.$on('wb_child_added', function() {

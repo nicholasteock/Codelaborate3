@@ -10,7 +10,8 @@
 angular.module('codelaborateApp')
 	.factory('Fireroom', ['$rootScope', '$firebase', function ($rootScope, $firebase) {
 		
-		var fireroom = {};
+		var roomId 		= '';
+		var fireroom 	= {};
 
 		fireroom.users 	= [];
 		fireroom.chat 	= [];
@@ -33,6 +34,8 @@ angular.module('codelaborateApp')
 		};
 
 		fireroom.initFire = function(room) {
+			roomId = room;
+
 			var usersRef 	= new Firebase('https://codelaborate-ace.firebaseio.com/'+room+'/users');
 			fireroom.users 	= $firebase(usersRef).$asArray();
 
@@ -59,6 +62,12 @@ angular.module('codelaborateApp')
 			// console.log('Checking factory...');
 			// console.log('Users : ', fireroom.users);
 			// console.log('Chat : ', fireroom.chat);
+		};
+
+		fireroom.clearWb = function() {
+			var wbRef 		= new Firebase('https://codelaborate-wb.firebaseio.com/'+roomId);
+			$firebase(wbRef).$remove();
+			return;
 		};
 
 		return fireroom;
