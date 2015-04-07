@@ -18,7 +18,7 @@ angular.module('codelaborateApp')
 			}
 			var vid = document.createElement('video');
 			vid.autoplay = true;
-			// vid.muted = true; // Added to avoid feedback when testing locally
+			vid.muted = true; // Added to avoid feedback when testing locally
 			vid.id = peerId;
 			document.body.appendChild(vid);
 		});
