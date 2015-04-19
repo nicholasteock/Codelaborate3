@@ -62,9 +62,9 @@
 
 	<!-- Button toggles -->
 	<button type="button" class="btn btn-lg settings-button" title="Settings" ng-click="settingsShown=!settingsShown" tooltip="Settings"><span class="glyphicon glyphicon-cog"></span></button>
-	<button type="button" class="btn btn-lg call-button" tooltip="Voice Chat" ng-click="showSavePrompt()"><span class="glyphicon glyphicon-facetime-video"></span></button>
-	<button type="button" class="btn btn-lg chat-button" tooltip="Chat Box" ng-click="showSavePrompt()" tooltip="Chat box unavailable"><span class="glyphicon glyphicon-comment"></span></button>
-	<button type="button" class="btn btn-lg whiteboard-button" title="Whiteboard" ng-click="showSavePrompt()" tooltip="White board unavailable"><span class="glyphicon glyphicon-blackboard"></span></button>
+	<button type="button" class="btn btn-lg call-button" tooltip="Voice Chat (Unavailable)" ng-click="showSavePrompt()"><span class="glyphicon glyphicon-facetime-video"></span></button>
+	<button type="button" class="btn btn-lg chat-button" ng-click="showSavePrompt()" tooltip="Chat box (Unavailable)"><span class="glyphicon glyphicon-comment"></span></button>
+	<button type="button" class="btn btn-lg whiteboard-button" title="Whiteboard" ng-click="showSavePrompt()" tooltip="White board (Unavailable)"><span class="glyphicon glyphicon-blackboard"></span></button>
 
 	<!-- Panels -->
 	<settings-panel ng-show="settingsShown"></settings-panel>

@@ -245,6 +245,23 @@ angular.module('codelaborateApp')
 			$scope.outputEditor.setShowPrintMargin(false);
 			$scope.outputEditor.getSession().setValue('This is the output terminal.\n\nClick \'Run\' to see your code in action right here.');
 			$scope.outputEditor.setReadOnly(true);
+
+			$scope.outputEditor.getSession().selection.on('changeCursor', function() {
+				if(!lastCursorPosition.row) {
+					console.log("Empty lastCursorPosition");
+					return;
+				}
+				var currCursorPosition 	= $scope.outputEditor.getCursorPosition(),
+					currCursorRow 		= currCursorPosition.row,
+					currCursorCol 		= currCursorPosition.column;
+
+				console.log("curr last : ", currCursorPosition, lastCursorPosition);
+				if(currCursorRow < lastCursorPosition.row) {
+					console.log("currCursorRow is less than lastCursorPosition");
+					$scope.outputEditor.moveCursorToPosition(lastCursorPosition);
+					return;
+				}
+			});
 		};
 
 		$scope.outputAceChanged = function(e) {

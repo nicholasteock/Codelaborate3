@@ -12,6 +12,7 @@ angular.module('codelaborateApp')
 		
 		var roomId 		= '';
 		var fireroom 	= {};
+		var firstChatLoad = true;
 
 		fireroom.users 	= [];
 		fireroom.chat 	= [];
@@ -57,6 +58,15 @@ angular.module('codelaborateApp')
 			});
 			wbRef.on('child_removed', function() {
 				$rootScope.$broadcast('wb_child_removed');
+			});
+
+			chatRef.on('child_added', function() {
+				if(!firstChatLoad) {
+					$rootScope.$broadcast('chat_child_added');
+				}
+				else {
+					firstChatLoad = false;
+				}
 			});
 			// $rootScope.$broadcast('initfire-done');
 			// console.log('Checking factory...');

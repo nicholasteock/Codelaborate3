@@ -10,6 +10,8 @@
 angular.module('codelaborateApp')
 	.controller('CallCtrl', ['$scope', '$routeParams', function ($scope, $routeParams) {
 		var skylink = new Skylink();
+		var audioStream;
+		var videoStream;
 
 		skylink.on('peerJoined', function(peerId, peerInfo, isSelf) {
 			console.log('peerJoined : ', peerId);
@@ -26,6 +28,11 @@ angular.module('codelaborateApp')
 		skylink.on('incomingStream', function(peerId, stream, isSelf) {
 			console.log('incomingStream : ', peerId);
 			if(isSelf) {
+				$('.chatctrl').removeClass('hide');
+				$scope.audioEnabled = true;
+				$scope.videoEnabled = true;
+				videoStream = stream.getVideoTracks();
+				audioStream = stream.getAudioTracks();
 				return;
 			}
 			var vid = document.getElementById(peerId);
@@ -44,17 +51,54 @@ angular.module('codelaborateApp')
 			attachMediaStream(vid, stream);
 		});
 
+		skylink.on('mediaAccessStopped', function() {
+			console.log('mediaAccessStopped');
+			$('.btn-call').removeClass('hide');
+			$('.chatctrl').addClass('hide');
+		});
+		
+		skylink.on('mediaAccessError', function() {
+			console.log('mediaAccessError');
+			$('.btn-call').removeClass('hide');
+			$('.chatctrl').addClass('hide');
+		});
+
 		skylink.init({
 			apiKey: '86689a8d-4a49-48de-90aa-00875ccc64c1',
 			defaultRoom: $routeParams.codeId+$routeParams.version
 		});
 
 		$scope.startCall = function(event) {
-			event.target.style.visibility = 'hidden';
-			
+			// event.target.style.display = 'none';
+			$('.btn-call').addClass('hide');
+
 			skylink.joinRoom({
 				audio: true,
 				video: true
 			});
+		};
+
+		$scope.enableVideo = function() {
+			// console.log("enableVideo");
+			$scope.videoEnabled = true;
+			videoStream[0].enabled = true;
+		};
+
+		$scope.enableAudio = function() {
+			// console.log("enableVideo");
+			$scope.audioEnabled = true;
+			audioStream[0].enabled = true;
+		};
+
+		$scope.disableVideo = function() {
+			// console.log("disableVideo");
+			$scope.videoEnabled = false;
+			videoStream[0].enabled = false;
+		};
+
+		$scope.disableAudio = function() {
+			// console.log("disableVideo");
+			$scope.audioEnabled = false;
+			audioStream[0].enabled = false;
 		};
 	}]);
