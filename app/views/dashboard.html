@@ -68,7 +68,7 @@
 	<!-- Button toggles -->
 	<button type="button" class="btn btn-lg settings-button" tooltip="Settings" ng-click="settingsShown=!settingsShown" tooltip="Settings"><span class="glyphicon glyphicon-cog"></span></button>
 	<button type="button" class="btn btn-lg call-button" tooltip="Voice Chat" ng-click="launchChatroom()"><a href="#/call/{{fileHash}}/{{codeVersion}}" target="_blank"><span class="glyphicon glyphicon-facetime-video"></span></a></button>
-	<button type="button" class="btn btn-lg chat-button" tooltip="Chat Box" ng-click="chatShown=!chatShown"><span class="glyphicon glyphicon-comment"></span></button>
+	<button type="button" class="btn btn-lg chat-button" tooltip="Chat Box" ng-click="showChatroom()"><span class="glyphicon glyphicon-comment"></span><span class="glyphicon glyphicon-exclamation-sign update-alert" ng-show="chatHasUpdate"></span></button>
 	<button type="button" class="btn btn-lg whiteboard-button" tooltip="Whiteboard" data-toggle="modal" data-target="#whiteboard-modal"><span class="glyphicon glyphicon-blackboard" data-toggle="modal" data-target="#myModal"></span></button>
 
 	<!-- Panels -->
@@ -78,7 +78,7 @@
 
 <nav class="navbar navbar-default navbar-fixed-bottom footer">
 	<div class="container-fluid">
-		<div class="navbar-text">Codelaborate - Collaborative code editor</div>
+		<div class="navbar-text util-font-white">Codelaborate - Collaborative code editor</div>
 		<form class="navbar-form navbar-right">
 			<span class="util-font-white">Collaborative Link - </span>
 			<input type="text" class="form-control pointer collaboration-link" value={{'http://hosting.nicholasteock.com/web/codelaborate/'}}{{fileHash}}{{'/'}}{{codeVersion}} readonly>

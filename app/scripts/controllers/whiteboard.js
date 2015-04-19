@@ -51,7 +51,7 @@ angular.module('codelaborateApp')
 		$scope.whiteboardFactory.setContext(context);
 
 		$scope.$on('wb_done', function(event) {
-			console.log('wb_done. buffer : ', $scope.fireroom.wb);
+			// console.log('wb_done. buffer : ', $scope.fireroom.wb);
 
 			// $scope.whiteboardFactory.setBuffer($scope.fireroom.wb);
 			$scope.whiteboardFactory.initBuffer();

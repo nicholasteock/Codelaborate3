@@ -12,6 +12,7 @@ angular.module('codelaborateApp')
 		'$rootScope',
 		'$scope',
 		'HOST_PARAMS',
+		'$cookies',
 		'$http',
 		'$q',
 		'$firebase',
@@ -20,7 +21,7 @@ angular.module('codelaborateApp')
 		'Fireroom',
 		'ServerSocket',
 		'$modal',
-		function ($rootScope, $scope, HOST_PARAMS, $http, $q, $firebase, md5, $routeParams, Fireroom, ServerSocket, $modal) {
+		function ($rootScope, $scope, HOST_PARAMS, $cookies, $http, $q, $firebase, md5, $routeParams, Fireroom, ServerSocket, $modal) {
 			$scope.fireroom 		= Fireroom;
 			$scope.shareable 		= true;
 			$scope.loading 			= true;
@@ -29,6 +30,7 @@ angular.module('codelaborateApp')
 			$scope.settingsShown 	= false;
 			$scope.chatShown 		= false;
 			$scope.showUsers 		= false;
+			$scope.chatHasUpdate 	= false;
 			$scope.fileHash 		= $routeParams.codeId;
 			$scope.codeVersion 		= $routeParams.version;
 			$scope.editorTheme 		= 'Monokai';
@@ -51,7 +53,13 @@ angular.module('codelaborateApp')
 			
 			$scope.editFilename = false;
 			$scope.fileName 	= 'untitled';
-			$scope.userId 		= 'Guest' + Math.floor(Math.random()*9000) + 1000;
+
+			if($cookies.userId) {
+				$scope.userId = $cookies.userId;
+			}
+			else {
+				$scope.userId 		= 'Guest' + Math.floor(Math.random()*9000) + 1000;
+			}
 			$scope.newUserId 	= $scope.userId;
 
 			var room 				= $routeParams.codeId+'/'+$routeParams.version;
@@ -152,6 +160,7 @@ angular.module('codelaborateApp')
 				}
 				if($scope.userId === $scope.newUserId) { return; }
 				$scope.firepad.setUserId($scope.newUserId);
+				$cookies.userId  = $scope.newUserId;
 				$scope.userId = $scope.newUserId;
 			};
 
@@ -265,8 +274,23 @@ angular.module('codelaborateApp')
 			$scope.outputAceLoaded = function(_editor) {
 				$scope.outputEditor = _editor;
 				$scope.outputEditor.setShowPrintMargin(false);
-				$scope.outputEditor.getSession().setValue('This is the output terminal.\n\nClick \'Run\' to see your code in action right here.');
+				$scope.outputEditor.getSession().setValue('This is the output terminal.\n\nClick \'Run\' to see your code in action right here.', -1);
 				$scope.outputEditor.setReadOnly(true);
+
+				$scope.outputEditor.getSession().selection.on('changeCursor', function() {
+					if(!lastCursorPosition.row) {
+						// console.log("Empty lastCursorPosition");
+						return;
+					}
+					var currCursorPosition 	= $scope.outputEditor.getCursorPosition(),
+						currCursorRow 		= currCursorPosition.row;
+
+					if(currCursorRow < lastCursorPosition.row) {
+						console.log('currCursorRow is less than lastCursorPosition');
+						$scope.outputEditor.moveCursorToPosition(lastCursorPosition);
+						return;
+					}
+				});
 			};
 
 			$scope.outputAceChanged = function(e) {
@@ -284,9 +308,21 @@ angular.module('codelaborateApp')
 				}
 			};
 
-			$scope.launchChatroom = function() {
-				
-			}
+			$scope.outputCursorChanged = function() {
+
+			};
+
+			$scope.showChatroom = function() {
+				$scope.chatShown = !$scope.chatShown;
+				$scope.chatHasUpdate = false;
+			};
+
+			$scope.$on('chat_child_added', function() {
+				if(!$scope.chatShown) {
+					$scope.chatHasUpdate = true;
+				}
+				return;
+			});
 
 			// Outputs content passed from node server onto output editor.
 			$scope.$on('socket:output', function (ev, data) {
@@ -319,23 +355,5 @@ angular.module('codelaborateApp')
 				$scope.editorLanguage = language;
 				$scope.editor.getSession().setMode($scope.editorLanguages[language]);
 			});
-
-			/***************************************************************************/
-			// WHITEBOARD
-			/***************************************************************************/
-			// $scope.showWhiteboard = function() {
-			// 	var modalInstance = $modal.open({
-			// 		templateUrl   	: 'views/modals/whiteboard.html',
-			// 		controller    	: 'WhiteboardCtrl',
-			// 		backdrop      	: true,
-			// 		backdropClass 	: 'modal-backdrop',
-			// 		windowClass 	: 'whiteboard-modal'
-			// 	});
-
-			// 	modalInstance.opened.then(function() {
-			// 		console.log('OPENDED');
-			// 		// $rootScope.$broadcast('init_canvas');
-			// 	});
-			// };
 		}
 	]);

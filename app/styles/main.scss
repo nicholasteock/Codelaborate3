@@ -58,7 +58,8 @@ video {
   .main-nav .navbar-item > a:hover {
     background-color: transparent;
     opacity: 0.8;
-    box-shadow: #1e043c 2px 2px inset;
+    color: #FFF;
+    // box-shadow: #1e043c 2px 2px inset;
   }
   .main-nav .navbar-item.active > a {
     background-color: #1e043c;
@@ -104,7 +105,7 @@ video {
   }
   .open-file-button::before {
     content: 'Open File';
-    width: 6rem;
+    width: 10rem;
     height: 2rem;
     position: absolute;
     cursor: pointer;

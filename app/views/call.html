@@ -10,7 +10,18 @@
 	</div>
 </nav>
 
-<button type="button" class="center-block btn btn-lg btn-success" ng-click="startCall($event)">Join Chatroom</button>
+<!-- Start call button -->
+<button type="button" class="center-block btn btn-lg btn-success btn-call" ng-click="startCall($event)">Join Chatroom</button>
+
+<!-- Buttons to enable / disable video -->
+<div class="chatctrl hide" style="margin-left:2vw; margin-bottom: 1vh;">
+	<button type="button" class="btn btn-danger" ng-show="videoEnabled" ng-click="disableVideo()" tooltip="Click to disable video"><span class="glyphicon glyphicon-eye-close"></span></button>
+	<button type="button" class="btn btn-success" ng-hide="videoEnabled" ng-click="enableVideo()" tooltip="Click to enable video"><span class="glyphicon glyphicon-eye-open"></span></button>
+	<button type="button" class="btn btn-danger" ng-show="audioEnabled" ng-click="disableAudio()" tooltip="Click to disable audio"><span class="glyphicon glyphicon-volume-off"></span></button>
+	<button type="button" class="btn btn-success" ng-hide="audioEnabled" ng-click="enableAudio()" tooltip="Click to enable audio"><span class="glyphicon glyphicon-volume-up"></span></button>
+</div>
+
+<!-- Self video box -->
 <video id="myvideo" autoplay muted="muted"></video>
 
 <nav class="navbar navbar-default navbar-fixed-bottom footer">
